@@ -104,6 +104,32 @@ fn apply_delta(graph: &Graph) {
             } else {
                 println!("   ⚠️  Edge {} -> {} missing content/hash", link.rel, path);
             }
+        } else if link.rel == "syncs" {
+             // Capability: Chronological Snapshot / Backup
+             // Usage: { "type": "syncs", "source": ".", "target": "snapshots/v1" }
+             let source = &link.source.replace("DIR:", "").replace("FILE:", "");
+             let target = &link.target.replace("DIR:", "").replace("FILE:", "");
+             
+             println!("   └── Syncing: {} -> {}", source, target);
+             
+             let output = std::process::Command::new("rsync")
+                 .arg("-av") 
+                 .arg("--exclude").arg("target")
+                 .arg("--exclude").arg(".git")
+                 .arg("--exclude").arg("meta3-graph-core/target")
+                 .arg("--exclude").arg("node_modules")
+                 .arg(source)
+                 .arg(target)
+                 .output();
+
+             match output {
+                 Ok(o) => {
+                     println!("       ✅ Sync Complete. Status: {}", o.status);
+                     // We don't print stdout here to keep the log clean (Deltas only)
+                 },
+                 Err(e) => println!("       ❌ Sync Failed: {}", e),
+             }
+
         } else if link.rel == "executes" || link.rel == "runs" {
             // Orchestration / Tool Use
             // Target format: "SHELL:<cmd>" or just "<cmd>"
