@@ -112,3 +112,7 @@ EXAMPLE:
     ]
   }
 
+🔌 Tiny Graph Engine Online. Waiting for JSON Graph Delta on Standard Input...
+⚡ Applying Delta: 2 Nodes, 1 Links
+   └── Reifying: creates -> Manifesto_v2.md
+       ✅ Written (CAS verified)
