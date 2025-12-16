@@ -1,0 +1,42 @@
+{
+    "name": "Meta3 Universal Task Interface Representation (UTIR)",
+    "version": "2024-Distillation-v1",
+    "description": "The canonical schema for all Meta3 actions, unifying Research, Code, and Self-Modification.",
+    "structs": {
+        "Task": {
+            "fields": {
+                "id": "string (uuid)",
+                "goal": "string (natural language)",
+                "context": "string (optional)",
+                "bits": "Bits (A/U/E/D/R/T)"
+            }
+        },
+        "Plan": {
+            "fields": {
+                "steps": "array of Ops",
+                "rationale": "string",
+                "causal_graph": "WolframGraph (optional)"
+            }
+        },
+        "Bits": {
+            "fields": {
+                "A": "integer (0=Autonomous, 1=Ask)",
+                "U": "integer (Urgency 0-9)",
+                "E": "integer (Emergence 0=Static, 1=Dynamic)",
+                "D": "integer (Delta 0=NoDrift, 1=Drift)",
+                "R": "integer (Receipt 0=None, 1=Saved)",
+                "T": "integer (Trace 0=Off, 1=On)"
+            }
+        }
+    },
+    "lifecycle": [
+        "PLAN",
+        "PATCH",
+        "TEST",
+        "STOP"
+    ],
+    "artifacts": {
+        "promoted": "artifacts/",
+        "ephemeral": ".sbx_/"
+    }
+}
